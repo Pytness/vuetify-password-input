@@ -24,15 +24,13 @@
 							:counter="show_counter"
 							:loading="loading"
 							:append-icon="selected_append_icon"
-							maxlength="100"
+							:maxlength="max_length == 0 ? null : max_length"
 						/>
 					</v-col>
 					<v-col
 						cols="12"
 						md="6"
 					>
-						<!-- <v-btn @click="randomize">Randomize Password</v-btn> -->
-
 						<v-checkbox
 							v-model="toggleable"
 							label="Toggleable"
@@ -57,6 +55,11 @@
 							v-model="loading"
 							label="Loading"
 						></v-checkbox>
+						<v-slider
+							v-model="max_length"
+							thumb-label
+							label="Max length"
+						></v-slider>
 					</v-col>
 				</v-row>
 			</v-container>
@@ -92,6 +95,7 @@ export default class Home extends Vue {
 	public show_counter: boolean = false;
 	public show_strength: boolean = false;
 	public loading: boolean = false;
+	public max_length: number = 0;
 
 	public min_rule(value: string): boolean {
 		return value.length > 8;
