@@ -6,8 +6,8 @@
 		@input="on_input"
 		@change="calc_strength(value)"
 		:type="show_password ? 'text' : 'password'"
-		:append-icon="show_password ? 'mdi-eye' : 'mdi-eye-off'"
-		@click:append="show_password = !show_password"
+		:append-icon="final_append_icon"
+		@click:append="append_click_event"
 		:loading="loading || show_strength"
 	>
 		<template #progress>
@@ -47,12 +47,31 @@ export default class PasswordInput extends Vue {
 	@Prop({ default: false })
 	public show_strength!: boolean;
 
+	@Prop({ default: null })
+	public appendIcon!: string;
+
+	@Prop({ default: false })
+	public toggleable!: boolean;
+
 	public show_password: boolean = false;
 
 	public strength: number = -1;
 
 	public colors: string[] = ["red", "orange", "yellow", "green"];
 
+	get append_click_event() {
+		if (!this.toggleable)
+			return false;
+
+		return this.toggle_show_password;
+	}
+
+	get final_append_icon() {
+		if (this.toggleable)
+			return this.show_password ? 'mdi-eye' : 'mdi-eye-off'
+
+		return this.appendIcon;
+	}
 
 	private calculate_strength(value: string): number {
 		const response = password_checker(value);
@@ -69,6 +88,10 @@ export default class PasswordInput extends Vue {
 		console.log("strength", strength);
 
 		return strength;
+	}
+
+	public toggle_show_password() {
+		this.show_password = !this.show_password;
 	}
 
 	public on_input(value: string) {
