@@ -18,12 +18,13 @@
 					>
 						<PasswordInput
 							v-model="password"
+							:toggleable="toggleable"
 							:rules="[min_rule]"
 							:show_strength="show_strength"
 							:counter="show_counter"
 							:loading="loading"
+							:append-icon="selected_append_icon"
 							maxlength="100"
-							append-icon="mdi-key"
 						/>
 					</v-col>
 					<v-col
@@ -31,10 +32,23 @@
 						md="6"
 					>
 						<!-- <v-btn @click="randomize">Randomize Password</v-btn> -->
+
+						<v-checkbox
+							v-model="toggleable"
+							label="Toggleable"
+						></v-checkbox>
+						<v-combobox
+							v-model="selected_append_icon"
+							:items="icons"
+							label="append-icon"
+							outlined
+							dense
+						></v-combobox>
 						<v-checkbox
 							v-model="show_counter"
 							label="Show counter"
 						></v-checkbox>
+
 						<v-checkbox
 							v-model="show_strength"
 							label="Show strength"
@@ -68,6 +82,13 @@ import PasswordInput from '@/vuetify-password-input.vue'
 export default class Home extends Vue {
 	public password: string = '';
 
+	public toggleable: boolean = false;
+	public selected_append_icon: string | null = null;
+	public icons: Array<string | null> = [
+		'mdi-key',
+		'mdi-key-variant',
+		'mdi-account-key',
+	]
 	public show_counter: boolean = false;
 	public show_strength: boolean = false;
 	public loading: boolean = false;
