@@ -20,6 +20,8 @@
     "src/**/*.vue"
   ],
   "dependencies": {
+    "@types/zxcvbn": "^4.4.1",
+    "vue-class-component": "^7.2.6",
     "vue-property-decorator": "^9.1.2",
     "vuetify": "^2.4.0",
     "zxcvbn": "^4.4.2"
