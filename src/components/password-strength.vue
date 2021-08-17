@@ -56,16 +56,22 @@ export default class PasswordStrength extends Vue {
 	})
 	public colors!: string[];
 
-	public get_bar_classes(index: number) {
+	public get_index_color(index: number): string {
 		const color_index = this.value >= this.colors.length ?
-			this.colors.length - 1 : this.value;
+			this.colors.length - 1 :
+			this.value;
 
+		if (index < 0 || index > this.value)
+			return this.backgroundColor;
+
+		return this.colors[color_index];
+	}
+
+	public get_bar_classes(index: number) {
 		return [
 			'v-progress-linear',
 			'progress-segment',
-			index <= this.value ?
-				this.colors[color_index]
-				: this.backgroundColor
+			this.get_index_color(index)
 		]
 	}
 
