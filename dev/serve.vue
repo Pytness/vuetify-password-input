@@ -18,6 +18,7 @@
 					>
 						<PasswordInput
 							v-model="password"
+							:label="label"
 							:toggleable="toggleable"
 							:rules="[min_rule]"
 							:show_strength="show_strength"
@@ -31,6 +32,10 @@
 						cols="12"
 						md="6"
 					>
+						<v-text-field
+							v-model="label"
+							label="Label"
+						/>
 						<v-checkbox
 							v-model="toggleable"
 							label="Toggleable"
@@ -86,6 +91,7 @@ import PasswordInput from '@/vuetify-password-input.vue'
 export default class Home extends Vue {
 	public password: string = '';
 
+	public label: string = 'Password';
 	public toggleable: boolean = false;
 	public selected_append_icon: string | null = null;
 	public icons: Array<string | null> = [
