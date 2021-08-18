@@ -35,13 +35,14 @@
 							v-model="toggleable"
 							label="Toggleable"
 						></v-checkbox>
-						<v-combobox
+						<v-select
 							v-model="selected_append_icon"
 							:items="icons"
 							label="append-icon"
-							outlined
+							append-outer-icon="mdi-close"
+							@click:append-outer="selected_append_icon = null"
 							dense
-						></v-combobox>
+						></v-select>
 						<v-checkbox
 							v-model="show_counter"
 							label="Show counter"
