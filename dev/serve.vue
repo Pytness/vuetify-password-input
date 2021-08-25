@@ -20,7 +20,7 @@
 							v-model="password"
 							:label="label"
 							:toggleable="toggleable"
-							:rules="[min_rule]"
+							:rules="selected_rules"
 							:show_strength="show_strength"
 							:counter="show_counter"
 							:loading="loading"
@@ -44,8 +44,7 @@
 							v-model="selected_append_icon"
 							:items="icons"
 							label="append-icon"
-							append-outer-icon="mdi-close"
-							@click:append-outer="selected_append_icon = null"
+							clearable
 							dense
 						></v-select>
 						<v-checkbox
@@ -66,6 +65,14 @@
 							thumb-label
 							label="Max length"
 						></v-slider>
+						<v-select
+							label="Rules"
+							v-model="selected_rules"
+							:items="rules"
+							multiple
+							dense
+							clearable
+						></v-select>
 					</v-col>
 				</v-row>
 			</v-container>
@@ -78,10 +85,18 @@
 
 import {
 	Component,
-	Vue
+	Vue,
+	Watch
 } from 'vue-property-decorator';
 
 import PasswordInput from '@/vuetify-password-input.vue'
+import { DataTableHeader } from 'vuetify'
+
+type Rule = (value: string) => boolean | string;
+interface RuleTableHeader<T = any> extends Omit<DataTableHeader<T>, 'value'> {
+	value: Rule;
+};
+
 
 @Component({
 	components: {
@@ -93,31 +108,27 @@ export default class Home extends Vue {
 
 	public label: string = 'Password';
 	public toggleable: boolean = false;
+
 	public selected_append_icon: string | null = null;
 	public icons: Array<string | null> = [
 		'mdi-key',
 		'mdi-key-variant',
 		'mdi-account-key',
-	]
+	];
+
 	public show_counter: boolean = false;
 	public show_strength: boolean = false;
 	public loading: boolean = false;
 	public max_length: number = 0;
 
-	public min_rule(value: string): boolean {
-		return value.length > 8;
-	}
-
-	public randomize() {
-
-		const LENGTH = 50;
-		const str = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ!"#$%&\'()*+,-./:;<=>?@[\\]^_`{|}~ ';
-		let password = '';
-
-		for (let i = 0; i < LENGTH; i++)
-			password += str[(Math.random() * str.length) | 0]
-
-		this.password = password
-	}
+	public selected_rules: Rule[] = [];
+	public rules: RuleTableHeader[] = [
+		{
+			text: 'Min Length',
+			value: (value: string) => {
+				return value.length > 8 || 'Not enough characters'
+			}
+		}
+	];
 }
 </script>
