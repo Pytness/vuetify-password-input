@@ -85,8 +85,7 @@
 
 import {
 	Component,
-	Vue,
-	Watch
+	Vue
 } from 'vue-property-decorator';
 
 import PasswordInput from '@/vuetify-password-input.vue'
@@ -123,6 +122,12 @@ export default class Home extends Vue {
 
 	public selected_rules: Rule[] = [];
 	public rules: RuleTableHeader[] = [
+		{
+			text: 'Required',
+			value: (value: string) => {
+				return value.length > 0 || 'This field is required'
+			}
+		},
 		{
 			text: 'Min Length',
 			value: (value: string) => {
