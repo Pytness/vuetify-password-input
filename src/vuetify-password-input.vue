@@ -17,7 +17,7 @@
 				absolute
 			/>
 			<password-strength
-				v-if="show_strength"
+				v-else-if="show_strength"
 				:class="loading ? 'mt-2' : ''"
 				v-model="strength"
 				:colors="colors"
@@ -139,11 +139,6 @@ export default class PasswordInput extends Vue {
 		console.log("entropy", entropy);
 
 		return entropy;
-	}
-
-	mounted() {
-		// this.strength = this.calculate_strength(this.value);
-		// this.strength = this.calculate_strength(value);
 	}
 }
 </script>
