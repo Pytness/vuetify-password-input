@@ -28,9 +28,10 @@
 
 <script lang="ts">
 import { Vue, Component, Prop, Watch } from "vue-property-decorator";
-import password_checker from "zxcvbn";
 
 import PasswordStrength from "@/components/password-strength.vue";
+
+type StrengthFunction = (value: string) => number;
 
 @Component({
 	components: {
@@ -53,9 +54,14 @@ export default class PasswordInput extends Vue {
 	@Prop({ default: false })
 	public toggleable!: boolean;
 
-	public show_password: boolean = false;
+	@Prop({ default: false })
+	public show_password!: boolean;
 
+	// Number between 0 and 1, or -1 if empty
 	public strength: number = -1;
+
+	@Prop({ default: null })
+	public strength_function!: StrengthFunction | null;
 
 	public colors: string[] = ["red", "orange", "yellow", "green"];
 
@@ -73,23 +79,6 @@ export default class PasswordInput extends Vue {
 		return this.appendIcon;
 	}
 
-	private calculate_strength(value: string): number {
-		const response = password_checker(value);
-		const guesses = response.guesses_log10;
-
-		console.log("response", response);
-
-		if (guesses === 0)
-			return -1;
-
-		const strength = Math.floor(
-			(guesses / 50) * this.colors.length
-		);
-		console.log("strength", strength);
-
-		return strength;
-	}
-
 	public toggle_show_password() {
 		this.show_password = !this.show_password;
 	}
@@ -100,7 +89,8 @@ export default class PasswordInput extends Vue {
 
 	@Watch("value", { immediate: true })
 	public on_value_change(new_value: string, _: string) {
-		this.calc_strength(new_value);
+		if (this.show_strength)
+			this.calc_strength(new_value);
 	}
 
 	@Watch("show_strength", { immediate: true })
@@ -110,35 +100,14 @@ export default class PasswordInput extends Vue {
 	}
 
 	public calc_strength(value: string) {
-		if (this.show_strength)
-			this.strength = this.calculate_strength(value);
-	}
 
-	public calc_entropy(password: string) {
-		if (password.length === 0)
-			return 0;
+		if (this.strength_function === null)
+			return;
 
-		const count_map: Record<string, number> = {};
-
-		for (let char of password) {
-			if (char in count_map == false)
-				count_map[char] = 0;
-
-			count_map[char] += 1;
-		}
-
-		const probs = Object.values(count_map).map(
-			(count) => count / password.length
-		);
-
-		const entropy = probs
-			.map((p) => Math.log2(1 / p) / (1 / p))
-			.reduce((a, b) => a + b);
-
-		console.log("count map", count_map);
-		console.log("entropy", entropy);
-
-		return entropy;
+		if (value.length === 0)
+			this.strength = -1
+		else
+			this.strength = this.strength_function(value);
 	}
 }
 </script>
