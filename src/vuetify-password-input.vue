@@ -31,7 +31,7 @@ import { Vue, Component, Prop, Watch } from "vue-property-decorator";
 
 import PasswordStrength from "@/components/password-strength.vue";
 
-type StrengthFunction = (value: string) => number;
+type StrengthFunction = ((value: string) => number) | ((value: string) => Promise<number>);
 
 @Component({
 	components: {
@@ -105,9 +105,14 @@ export default class PasswordInput extends Vue {
 			return;
 
 		if (value.length === 0)
-			this.strength = -1
-		else
-			this.strength = this.strength_function(value);
+			this.strength = -1;
+		else {
+			// Handle both normal functions and async functions
+			Promise.resolve<number>(this.strength_function(value))
+				.then((strength: number) =>
+					this.strength = strength
+				)
+		}
 	}
 }
 </script>
