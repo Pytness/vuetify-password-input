@@ -95,6 +95,8 @@ import {
 
 import PasswordInput from '@/vuetify-password-input.vue'
 
+import zxcvbn from 'zxcvbn'
+
 
 type Rule = (value: string) => boolean | string;
 type StrengthFunction = (value: string) => number;
@@ -161,7 +163,7 @@ export default class Home extends Vue {
 
 	public strength_functions: Record<string, StrengthFunction> = {
 		'Shannon entropy': calc_entropy,
-		'Zxcvbn': (value: string) => value.length
+		'Zxcvbn': (value: string) => zxcvbn(value).score
 	};
 
 	public selected_rule_keys: string[] = [];
