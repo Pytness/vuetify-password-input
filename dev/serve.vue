@@ -155,7 +155,7 @@ export default class Home extends Vue {
 			return value.length > 0 || 'This field is required'
 		},
 		'Min length': (value: string) => {
-			return value.length > 8 || 'Not enough characters'
+			return value.length > 8 || 'You need at least 8 characters'
 		}
 	};
 
