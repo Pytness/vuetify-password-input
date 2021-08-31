@@ -54,8 +54,7 @@ export default class PasswordInput extends Vue {
 	@Prop({ default: false })
 	public toggleable!: boolean;
 
-	@Prop({ default: false })
-	public show_password!: boolean;
+	public show_password: boolean = false;
 
 	// Number between 0 and 1, or -1 if empty
 	public strength: number = -1;
