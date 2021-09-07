@@ -1,10 +1,7 @@
 <template>
 	<div
 		role="progressbar"
-		class="v-progress-linear
-			v-progress-linear--absolute
-			v-progress-linear--rounded
-			v-progress-linear--visible"
+		class="v-progress-linear v-progress-linear--absolute v-progress-linear--rounded v-progress-linear--visible"
 		style="height: 4px"
 	>
 		<v-row>
@@ -19,7 +16,6 @@
 					style="height: 4px"
 				></div>
 			</v-col>
-
 		</v-row>
 	</div>
 </template>
@@ -31,6 +27,12 @@ import {
 	Component,
 	Prop,
 } from 'vue-property-decorator';
+
+
+export type StrengthFunction = (value: string, _: AbortSignal) => number;
+export type AsyncStrengthFunction = (value: string, signal: AbortSignal) => Promise<number>;
+export type AnyStrengthFunction = StrengthFunction | AsyncStrengthFunction;
+
 
 
 @Component({})
