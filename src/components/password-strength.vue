@@ -28,13 +28,6 @@ import {
 	Prop,
 } from 'vue-property-decorator';
 
-
-export type StrengthFunction = (value: string, _: AbortSignal) => number;
-export type AsyncStrengthFunction = (value: string, signal: AbortSignal) => Promise<number>;
-export type AnyStrengthFunction = StrengthFunction | AsyncStrengthFunction;
-
-
-
 @Component({})
 export default class PasswordStrength extends Vue {
 

@@ -31,7 +31,8 @@
 import { Vue, Component, Prop, Watch } from "vue-property-decorator";
 
 
-import PasswordStrength, { AnyStrengthFunction } from "@/components/password-strength.vue";
+import PasswordStrength from "@/components/password-strength.vue";
+import { AnyStrengthFunction } from "@/components/strength-types"
 
 @Component({
 	components: {
