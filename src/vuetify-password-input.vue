@@ -8,11 +8,11 @@
 		:type="show_password ? 'text' : 'password'"
 		:append-icon="final_append_icon"
 		@click:append="append_click_event"
-		:loading="loading || show_strength"
+		:loading="is_loading || show_strength"
 	>
 		<template #progress>
 			<v-progress-linear
-				v-if="loading"
+				v-if="is_loading"
 				indeterminate
 				absolute
 			/>
@@ -27,11 +27,11 @@
 </template>
 
 <script lang="ts">
+
 import { Vue, Component, Prop, Watch } from "vue-property-decorator";
 
-import PasswordStrength from "@/components/password-strength.vue";
 
-type StrengthFunction = ((value: string) => number) | ((value: string) => Promise<number>);
+import PasswordStrength, { AnyStrengthFunction } from "@/components/password-strength.vue";
 
 @Component({
 	components: {
@@ -44,6 +44,10 @@ export default class PasswordInput extends Vue {
 
 	@Prop({ default: false })
 	public loading!: boolean;
+
+	public get is_loading(): boolean {
+		return (this.show_strength && this.current_promise !== null) || this.loading;
+	};
 
 	@Prop({ default: false })
 	public show_strength!: boolean;
@@ -60,7 +64,9 @@ export default class PasswordInput extends Vue {
 	public strength: number = -1;
 
 	@Prop({ default: null })
-	public strength_function!: StrengthFunction | null;
+	public strength_function!: AnyStrengthFunction | null;
+	public current_promise: Promise<any> | null = null;
+	public abort_controller = new AbortController();
 
 	public colors: string[] = ["red", "orange", "yellow", "green"];
 
@@ -73,7 +79,8 @@ export default class PasswordInput extends Vue {
 
 	get final_append_icon() {
 		if (this.toggleable)
-			return this.show_password ? 'mdi-eye' : 'mdi-eye-off'
+			return this.show_password ?
+				'mdi-eye' : 'mdi-eye-off'
 
 		return this.appendIcon;
 	}
@@ -98,20 +105,50 @@ export default class PasswordInput extends Vue {
 			this.calc_strength(this.value);
 	}
 
-	public calc_strength(value: string) {
-
-		if (this.strength_function === null)
-			return;
-
-		if (value.length === 0)
+	public async calc_strength(value: string) {
+		if (this.strength_function === null || value.length === 0) {
 			this.strength = -1;
-		else {
-			// Handle both normal functions and async functions
-			Promise.resolve<number>(this.strength_function(value))
-				.then((strength: number) =>
-					this.strength = strength
-				)
+			return
 		}
+
+		if (this.abort_controller !== null && this.is_loading)
+			this.abort_controller.abort();
+
+		this.abort_controller = new AbortController();
+		const signal = this.abort_controller.signal;
+
+		const returned_value = this.strength_function(value, signal);
+		const isAsyncFunction = returned_value instanceof Promise;
+
+		if (isAsyncFunction) {
+			const local_promise = new Promise<number>((resolve, reject) => {
+				const strength_promise = <Promise<number>>returned_value;
+				strength_promise.then(resolve);
+
+				signal.addEventListener('abort', () =>
+					reject(new DOMException('Aborted because of newer promise', 'AbortError'))
+				);
+
+			}).then((strength) =>
+				this.strength = strength
+			).catch(error => {
+				if (error.name !== 'AbortError') {
+					throw error
+				} else {
+					console.log('Aborted')
+				}
+			});
+
+			this.current_promise = local_promise;
+
+			local_promise.finally(() => {
+				if (local_promise === this.current_promise)
+					this.current_promise = null;
+			})
+
+			await local_promise;
+		} else
+			this.strength = <number>returned_value;
 	}
 }
 </script>
