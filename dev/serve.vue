@@ -94,12 +94,12 @@ import {
 } from 'vue-property-decorator';
 
 import PasswordInput from '@/vuetify-password-input.vue'
+import { AnyStrengthFunction } from '@/components/password-strength.vue'
 
 import zxcvbn from 'zxcvbn'
 
 
 type Rule = (value: string) => boolean | string;
-type StrengthFunction = (value: string) => number;
 
 
 function calc_entropy(password: string) {
@@ -161,9 +161,17 @@ export default class Home extends Vue {
 		}
 	};
 
-	public strength_functions: Record<string, StrengthFunction> = {
+	public strength_functions: Record<string, AnyStrengthFunction> = {
 		'Shannon entropy': calc_entropy,
-		'Zxcvbn': (value: string) => zxcvbn(value).score
+		'Zxcvbn': (value: string) => zxcvbn(value).score,
+		'Async Zxcvbn with loading': async (value: string) => {
+			await new Promise<void>((resolve, _) => {
+				setTimeout(() => {
+					resolve();
+				}, 2000);
+			});
+			return zxcvbn(value).score
+		}
 	};
 
 	public selected_rule_keys: string[] = [];
@@ -181,7 +189,7 @@ export default class Home extends Vue {
 		return this.selected_rule_keys.map(key => this.rules[key]);
 	}
 
-	get selected_strength_function(): StrengthFunction | null {
+	get selected_strength_function(): AnyStrengthFunction | null {
 		if (this.selected_strength_f_key !== null)
 			return this.strength_functions[this.selected_strength_f_key];
 
