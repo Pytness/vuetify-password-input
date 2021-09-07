@@ -105,6 +105,11 @@ export default class PasswordInput extends Vue {
 			this.calc_strength(this.value);
 	}
 
+	@Watch("strength_function")
+	public on_show_strength_function_change(_: any) {
+		this.calc_strength(this.value);
+	}
+
 	public async calc_strength(value: string) {
 		if (this.strength_function === null || value.length === 0) {
 			this.strength = -1;
