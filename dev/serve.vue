@@ -123,10 +123,8 @@ function calc_entropy(password: string) {
 		.map((p) => Math.log2(1 / p) / (1 / p))
 		.reduce((a, b) => a + b);
 
-	console.log("count map", count_map);
-	console.log("entropy", entropy);
-
-	return Math.round(entropy / 8 * 4);
+	const printable_char_count = 96;
+	return Math.round(entropy / Math.log2(printable_char_count) * 4);
 }
 
 @Component({
