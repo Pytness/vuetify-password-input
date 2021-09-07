@@ -137,11 +137,8 @@ export default class PasswordInput extends Vue {
 			}).then((strength) =>
 				this.strength = strength
 			).catch(error => {
-				if (error.name !== 'AbortError') {
+				if (error.name !== 'AbortError')
 					throw error
-				} else {
-					console.log('Aborted')
-				}
 			});
 
 			this.current_promise = local_promise;
