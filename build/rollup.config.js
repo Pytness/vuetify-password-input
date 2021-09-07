@@ -58,6 +58,18 @@ const baseConfig = {
 			exclude: 'node_modules/**',
 			extensions: ['.js', '.jsx', '.ts', '.tsx', '.vue'],
 			babelHelpers: 'bundled',
+			plugins: [
+				[
+					"@babel/plugin-proposal-decorators", {
+						"legacy": true,
+					}
+				],
+				[
+					"@babel/plugin-proposal-class-properties", {
+						"loose": true
+					}
+				]
+			]
 		},
 	},
 };
