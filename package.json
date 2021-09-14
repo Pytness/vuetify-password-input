@@ -1,7 +1,16 @@
 {
   "name": "vuetify-password-input",
-  "version": "1.1.2",
-  "description": "",
+  "version": "1.1.4",
+  "description": "A password input made with vuetify",
+  "keywords": [
+    "vue",
+    "vuetify",
+    "password",
+    "input"
+  ],
+  "license": "MIT",
+  "url": "https://github.com/Pytness/vuetify-password-input/issues",
+  "repository": "github:Pytness/vuetify-password-input",
   "scripts": {
     "serve": "vue-cli-service serve dev/serve.ts",
     "build": "cross-env NODE_ENV=production rollup --config build/rollup.config.js",
