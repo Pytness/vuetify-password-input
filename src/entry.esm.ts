@@ -1,11 +1,14 @@
 import Vue from 'vue';
-import Vuetify, { VTextField } from 'vuetify/lib';
+import Vuetify, { VTextField, VProgressLinear, VRow, VCol } from 'vuetify/lib';
 // Import vue component
 import component from '@/vuetify-password-input.vue';
 
 Vue.use(Vuetify, {
 	components: {
-		VTextField
+		VTextField,
+		VProgressLinear,
+		VRow,
+		VCol
 	}
 })
 
