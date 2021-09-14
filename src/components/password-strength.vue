@@ -28,13 +28,15 @@ import {
 	Prop,
 } from 'vue-property-decorator';
 
-@Component({})
+@Component({
+	name: 'PasswordStrength'
+})
 export default class PasswordStrength extends Vue {
 
-	@Prop({ default: -1 })
+	@Prop({ type: Number, default: -1 })
 	public value!: number;
 
-	@Prop({ default: 'blue-grey lighten-4' })
+	@Prop({ type: String, default: 'blue-grey lighten-4' })
 	public backgroundColor!: string;
 
 	@Prop({
@@ -76,7 +78,7 @@ export default class PasswordStrength extends Vue {
 }
 </script>
 
-<style scoped>
+<style>
 .progress-segment {
 	width: 100% !important;
 	position: initial !important;
