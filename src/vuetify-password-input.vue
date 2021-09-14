@@ -173,4 +173,7 @@ export default class VPasswordInput extends Vue {
 			this.strength = <number>returned_value;
 	}
 }
+
+export { PasswordStrength };
+
 </script>
