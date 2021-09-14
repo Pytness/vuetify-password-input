@@ -94,7 +94,7 @@ import {
 } from 'vue-property-decorator';
 
 import PasswordInput from '@/vuetify-password-input.vue'
-import { AnyStrengthFunction } from '@/components/password-strength.vue'
+import { AnyStrengthFunction } from '@/components/strength-types'
 
 import zxcvbn from 'zxcvbn'
 
