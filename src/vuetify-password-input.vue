@@ -4,7 +4,6 @@
 		:value="value"
 		v-on="$listeners"
 		@input="on_input"
-		@change="calc_strength(_value)"
 		:type="show_password ? 'text' : 'password'"
 		:append-icon="final_append_icon"
 		@click:append="append_click_event"
@@ -53,7 +52,13 @@ export default class VPasswordInput extends Vue {
 	public _loading!: boolean;
 
 	public get is_loading(): boolean {
-		return (this._show_strength && this.current_promise !== null) || this._loading;
+		const is_promise_aborted = this.abort_controller !== null &&
+			this.abort_controller.signal.aborted;
+
+		return (this._show_strength &&
+			this.current_promise !== null &&
+			!is_promise_aborted
+		) || this._loading;
 	};
 
 	@PropSync('show_strength', {
@@ -114,8 +119,8 @@ export default class VPasswordInput extends Vue {
 	}
 
 	@Watch("_value", { immediate: true })
-	public on_value_change(new_value: string, _: string) {
-		if (this._show_strength)
+	public on_value_change(new_value: string, old_value: string) {
+		if (this._show_strength && new_value != old_value)
 			this.calc_strength(new_value);
 	}
 
@@ -131,13 +136,13 @@ export default class VPasswordInput extends Vue {
 	}
 
 	public async calc_strength(value: string) {
+		if (this.abort_controller !== null && this.is_loading)
+			this.abort_controller.abort();
+
 		if (this._strength_function === null || value.length === 0) {
 			this.strength = -1;
 			return
 		}
-
-		if (this.abort_controller !== null && this.is_loading)
-			this.abort_controller.abort();
 
 		this.abort_controller = new AbortController();
 		const signal = this.abort_controller.signal;
