@@ -7,6 +7,7 @@ import commonjs from '@rollup/plugin-commonjs';
 import resolve from '@rollup/plugin-node-resolve';
 import replace from '@rollup/plugin-replace';
 import babel from '@rollup/plugin-babel';
+import scss from 'rollup-plugin-scss'
 import {
 	terser
 } from 'rollup-plugin-terser';
@@ -79,7 +80,6 @@ const baseConfig = {
 const external = [
 	// list external dependencies, exactly the way it is written in the import statement.
 	// eg. 'jquery'
-	'vue',
 ];
 
 // UMD/IIFE shared settings: output.globals
@@ -126,6 +126,7 @@ if (!argv.format || argv.format === 'es') {
 					],
 				],
 			}),
+			scss()
 		],
 	};
 	buildFormats.push(esConfig);
@@ -155,6 +156,7 @@ if (!argv.format || argv.format === 'cjs') {
 			}),
 			...baseConfig.plugins.postVue,
 			babel(baseConfig.plugins.babel),
+			scss()
 		],
 	};
 	buildFormats.push(umdConfig);
@@ -183,6 +185,7 @@ if (!argv.format || argv.format === 'iife') {
 					ecma: 5,
 				},
 			}),
+			scss()
 		],
 	};
 	buildFormats.push(unpkgConfig);
