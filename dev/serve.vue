@@ -109,7 +109,7 @@ function calc_entropy(password: string) {
 	const count_map: Record<string, number> = {};
 
 	for (let char of password) {
-		if (char in count_map == false)
+		if (char in count_map === false)
 			count_map[char] = 0;
 
 		count_map[char] += 1;
