@@ -62,8 +62,8 @@ export default class App extends Vue {
 		return value.length > 8 || 'Password must be at least 8 characters long';
 	}
 
-	public calc_strength(password: string) {
-		return zxcvbn(password).score;
+	public calc_strength(value: string) {
+		return zxcvbn(value).score;
 	}
 }
 </script>
