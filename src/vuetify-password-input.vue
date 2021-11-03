@@ -28,9 +28,9 @@
 <script lang="ts">
 import { Vue, Component, PropSync, Watch } from "vue-property-decorator";
 
-
 import PasswordStrength from "@/components/password-strength.vue";
 import { AnyStrengthFunction } from "@/components/strength-types"
+
 
 @Component({
 	name: 'VPasswordInput',
