@@ -68,3 +68,19 @@ export default class App extends Vue {
 }
 </script>
 ```
+
+
+# Documentation
+
+## Properties
+* `toggleable: boolean` : Enables password visibility toggling if `true`.
+
+* `loading: boolean` : Enables loading animation. Has priority over `show_strength`.
+
+* `show_strength: boolean` : Displays a 4-segment bar in the `progress` slot if `true`. Needs `strength_function` to work. 
+
+* `strength_function: (password: string) => 0, 1, 2, 3, 4` : A function that returns a strength value for a given password. If this function is `async`, the `loading` property will be set to `true` while it executes.
+
+* `append-icon: string` : Passed to `v-text-field` by default unless `toggleable` is `true`, in which case this will be overriden by `mdi-eye/mdi-eye-off`.
+
+Any other properties will be handled by the inner `v-text-field`
