@@ -1,35 +1,20 @@
 <template>
-	<v-text-field
-		v-bind="$attrs"
-		:value="value"
-		v-on="$listeners"
-		@input="on_input"
-		:type="show_password ? 'text' : 'password'"
-		:append-icon="final_append_icon"
-		@click:append="append_click_event"
-		:loading="is_loading || _show_strength"
-	>
+	<v-text-field v-bind="$attrs" :value="value" v-on="$listeners" @input="on_input"
+		:type="show_password ? 'text' : 'password'" :append-icon="final_append_icon" @click:append="append_click_event"
+		:loading="is_loading || _show_strength">
 		<template #progress>
-			<v-progress-linear
-				v-if="is_loading"
-				indeterminate
-				absolute
-			/>
-			<password-strength
-				v-else-if="_show_strength"
-				:class="_loading ? 'mt-2' : ''"
-				v-model="strength"
-				:colors="colors"
-			/>
+			<v-progress-linear v-if="is_loading" indeterminate absolute />
+			<password-strength v-else-if="_show_strength" :class="_loading ? 'mt-2' : ''" v-model="strength"
+				:colors="colors" />
 		</template>
 	</v-text-field>
 </template>
 
 <script lang="ts">
-import { Vue, Component, PropSync, Watch } from "vue-property-decorator";
+import { Component, PropSync, Vue, Watch } from "vue-property-decorator";
 
 import PasswordStrength from "@/components/password-strength.vue";
-import { AnyStrengthFunction } from "@/components/strength-types"
+import { AnyStrengthFunction } from "@/components/strength-types";
 
 
 @Component({
