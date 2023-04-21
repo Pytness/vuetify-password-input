@@ -1,6 +1,9 @@
 # vuetify-password-input
 A password input made with vuetify
 
+# Demo
+https://pytness.github.io/vuetify-password-input/
+
 # Installation
 ```bash
 $ npm install vuetify-password-input
