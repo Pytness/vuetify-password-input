@@ -15,12 +15,15 @@
 						<PasswordInput v-model="password" :label="label" :toggleable="toggleable"
 							:rules="selected_rules" :show_strength="show_strength"
 							:strength_function="selected_strength_function" :counter="show_counter"
-							:loading="loading" :append-icon="selected_append_icon"
+							:loading="loading" :prepend-icon="selected_prepend_icon"
+							:append-icon="selected_append_icon"
 							:maxlength="max_length == 0 ? null : max_length" />
 					</v-col>
 					<v-col cols="12" md="6">
 						<v-text-field v-model="label" label="Label" />
 						<v-checkbox v-model="toggleable" label="Toggleable"></v-checkbox>
+						<v-select v-model="selected_prepend_icon" :items="icons" label="prepend-icon"
+							clearable dense></v-select>
 						<v-select v-model="selected_append_icon" :items="icons" label="append-icon"
 							clearable dense></v-select>
 						<v-checkbox v-model="show_counter" label="Show counter"></v-checkbox>
@@ -92,6 +95,7 @@ export default class Home extends Vue {
 	public toggleable: boolean = false;
 
 	public selected_append_icon: string | null = null;
+	public selected_prepend_icon: string | null = null;
 	public icons: Array<string | null> = [
 		'mdi-key',
 		'mdi-key-variant',
