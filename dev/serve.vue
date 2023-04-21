@@ -27,11 +27,11 @@
 						<v-select v-model="selected_append_icon" :items="icons" label="append-icon"
 							clearable dense></v-select>
 						<v-checkbox v-model="show_counter" label="Show counter"></v-checkbox>
+						<v-slider v-model="max_length" thumb-label label="Max length"></v-slider>
 						<v-checkbox v-model="loading" label="Loading"></v-checkbox>
 						<v-checkbox v-model="show_strength" label="Show strength"></v-checkbox>
 						<v-select label="Strength Function" v-model="selected_strength_f_key"
 							:items="strength_function_keys" clearable></v-select>
-						<v-slider v-model="max_length" thumb-label label="Max length"></v-slider>
 						<v-select label="Rules" v-model="selected_rule_keys" :items="rule_keys" multiple
 							clearable></v-select>
 					</v-col>
