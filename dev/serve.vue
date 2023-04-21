@@ -2,6 +2,10 @@
 	<v-app>
 		<v-app-bar app color="primary" dark dense>
 			<v-app-bar-title>vuetify-password-input</v-app-bar-title>
+			<v-spacer></v-spacer>
+			<v-btn icon @click="toggle_dark_mode">
+				<v-icon>{{ $vuetify.theme.dark ? 'mdi-white-balance-sunny' : 'mdi-weather-night' }}</v-icon>
+			</v-btn>
 		</v-app-bar>
 
 		<v-main>
@@ -11,20 +15,23 @@
 						<PasswordInput v-model="password" :label="label" :toggleable="toggleable"
 							:rules="selected_rules" :show_strength="show_strength"
 							:strength_function="selected_strength_function" :counter="show_counter"
-							:loading="loading" :append-icon="selected_append_icon"
+							:loading="loading" :prepend-icon="selected_prepend_icon"
+							:append-icon="selected_append_icon"
 							:maxlength="max_length == 0 ? null : max_length" />
 					</v-col>
 					<v-col cols="12" md="6">
 						<v-text-field v-model="label" label="Label" />
 						<v-checkbox v-model="toggleable" label="Toggleable"></v-checkbox>
+						<v-select v-model="selected_prepend_icon" :items="icons" label="prepend-icon"
+							clearable dense></v-select>
 						<v-select v-model="selected_append_icon" :items="icons" label="append-icon"
 							clearable dense></v-select>
 						<v-checkbox v-model="show_counter" label="Show counter"></v-checkbox>
+						<v-slider v-model="max_length" thumb-label label="Max length"></v-slider>
 						<v-checkbox v-model="loading" label="Loading"></v-checkbox>
 						<v-checkbox v-model="show_strength" label="Show strength"></v-checkbox>
 						<v-select label="Strength Function" v-model="selected_strength_f_key"
 							:items="strength_function_keys" clearable></v-select>
-						<v-slider v-model="max_length" thumb-label label="Max length"></v-slider>
 						<v-select label="Rules" v-model="selected_rule_keys" :items="rule_keys" multiple
 							clearable></v-select>
 					</v-col>
@@ -88,6 +95,7 @@ export default class Home extends Vue {
 	public toggleable: boolean = false;
 
 	public selected_append_icon: string | null = null;
+	public selected_prepend_icon: string | null = null;
 	public icons: Array<string | null> = [
 		'mdi-key',
 		'mdi-key-variant',
@@ -141,6 +149,10 @@ export default class Home extends Vue {
 			return this.strength_functions[this.selected_strength_f_key];
 
 		return null;
+	}
+
+	toggle_dark_mode() {
+		this.$vuetify.theme.dark = !this.$vuetify.theme.dark;
 	}
 }
 </script>
