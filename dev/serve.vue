@@ -2,6 +2,10 @@
 	<v-app>
 		<v-app-bar app color="primary" dark dense>
 			<v-app-bar-title>vuetify-password-input</v-app-bar-title>
+			<v-spacer></v-spacer>
+			<v-btn icon @click="toggle_dark_mode">
+				<v-icon>{{ $vuetify.theme.dark ? 'mdi-white-balance-sunny' : 'mdi-weather-night' }}</v-icon>
+			</v-btn>
 		</v-app-bar>
 
 		<v-main>
@@ -141,6 +145,10 @@ export default class Home extends Vue {
 			return this.strength_functions[this.selected_strength_f_key];
 
 		return null;
+	}
+
+	toggle_dark_mode() {
+		this.$vuetify.theme.dark = !this.$vuetify.theme.dark;
 	}
 }
 </script>
